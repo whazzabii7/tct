@@ -13,7 +13,6 @@ TCT is a terminal-based chat tool that allows users to interact with ChatGPT via
 
 Before running TCT, make sure you have the following installed:
 
-- [Go](https://golang.org/dl/) (for installing `tgpt`)
 - [tgpt](https://github.com/cheusov/tgpt) (for interacting with ChatGPT via the terminal)
 - [fzf](https://github.com/junegunn/fzf) (for interactive fuzzy file selection)
 
