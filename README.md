@@ -61,7 +61,3 @@
 ## 📣 Why TCT?
 
 TCT was born from a simple need: to have persistent local history for `tgpt`. But it quickly became a powerful general-purpose utility for **anyone who iterates over terminal commands** and wants visibility, structure, and traceability in their command-line workflows.
-
----
-
-Would you like a visual diagram or example session included too?
