@@ -1,50 +1,67 @@
-# TCT (Terminal Chat Tool)
+# Terminal Call Tracker (TCT)
 
-TCT is a terminal-based chat tool that allows users to interact with ChatGPT via the command line. The tool supports saving chat history, browsing previous sessions, and using an interactive fuzzy finder (`fzf`) to easily navigate between stored conversations.
+**TCT (Terminal Call Tracker)** is a versatile, Rust-based CLI tool that acts as a wrapper for any terminal command, enabling you to **track input and output** across different runs. Originally designed to add local history to [`tgpt`](https://github.com/cheusov/tgpt), TCT has evolved into a general-purpose tool ideal for **debugging**, **interactive CLI workflows**, or **experimenting with variable inputs** across command-line programs.
 
-## Features
+## 🔧 What It Does
 
-- Start a new chat with ChatGPT.
-- Save and load previous chat sessions.
-- Browse saved chat files interactively using `fzf`.
-- Minimal dependencies, written in Zig for fast, compiled execution.
+* Wraps any terminal command and logs:
 
-## Prerequisites
+  * The **exact command** entered
+  * The **full terminal output**
+* Saves each run to a **timestamped text file**
+* Lets you **browse and switch** between saved sessions via [`fzf`](https://github.com/junegunn/fzf)
+* Creates a **local history** that’s searchable and reusable
+* Ideal for use cases like:
 
-Before running TCT, make sure you have the following installed:
+  * Iterative prompt testing with tools like `tgpt`
+  * Debugging shell scripts or CLI programs
+  * Comparing outputs with different command arguments
 
-- [tgpt](https://github.com/cheusov/tgpt) (for interacting with ChatGPT via the terminal)
-- [fzf](https://github.com/junegunn/fzf) (for interactive fuzzy file selection)
+## 🚀 Features
 
-### Installation
+* 📝 Save each command and its output in a readable log file
+* 🔍 Navigate saved sessions via `fzf`
+* 🕹️ Works with any terminal command
+* ⚡ Fast and compiled with Rust
+* 💻 Minimal dependencies
 
-1. **Install tgpt**:
-   - Clone the repository:
-     ```bash
-     git clone https://github.com/cheusov/tgpt.git
-     cd tgpt
-     go install
-     ```
-   - Verify installation:
-     ```bash
-     tgpt --help
-     ```
+## 📦 Installation
 
-2. **Install fzf**:
-   - For Linux (Ubuntu/Debian):
-     ```bash
-     sudo apt-get install fzf
-     ```
-   - For macOS (Homebrew):
-     ```bash
-     brew install fzf
-     ```
-   - For Windows (via WSL):
-     ```bash
-     sudo apt-get install fzf
-     ```
+> ⚠️ Installation section under construction. Stay tuned!
 
-3. **Clone the TCT project**:
-   ```bash
-   git clone https://github.com/yourusername/tct.git
-   cd tct
+## 🧪 Example Use Cases
+
+* **ChatGPT Prompt Iteration**:
+
+  * Test variations of a `tgpt` prompt, and review all outputs later.
+* **Shell Script Debugging**:
+
+  * Wrap your script calls and easily inspect the output over time.
+* **API Call Testing**:
+
+  * Track `curl` commands and responses as you refine headers or payloads.
+* **CLI Argument Tweaking**:
+
+  * Quickly change input flags and review the effects.
+
+## 🗂️ Session Management
+
+* All sessions are saved in a dedicated directory (e.g., `~/.tct/sessions`)
+* Each file includes:
+
+  * Timestamp
+  * Full command
+  * Full output
+* You can open `fzf` to switch between or preview saved sessions
+
+## 📌 Dependencies
+
+* [`fzf`](https://github.com/junegunn/fzf) – for interactive session selection
+
+## 📣 Why TCT?
+
+TCT was born from a simple need: to have persistent local history for `tgpt`. But it quickly became a powerful general-purpose utility for **anyone who iterates over terminal commands** and wants visibility, structure, and traceability in their command-line workflows.
+
+---
+
+Would you like a visual diagram or example session included too?
