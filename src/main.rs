@@ -1,30 +1,25 @@
-use std::io::{self, Write};
+mod io;
+mod mode_handler;
+mod history;
+mod tct_error;
 
-fn print_banner() {
-    print!("\033[1;36m");
-    println!("╔════════════════════════════╗");
-    println!("║        TCT CLI Tool        ║");
-    println!("╚════════════════════════════╝");
-    print!("\033[0m");
-    match io::stdout().flush() {
-        Ok(_) => {},
-        Err(e) => panic!("{:?}", e),
+use io::*;
+use mode_handler::ModeHandler;
+use std::error::Error;
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let os: String;
+    if cfg!(target_os = "windows") {
+        os = String::from("windows");
+    } else if cfg!(target_os = "linux") {
+        os = String::from("linux")
+    } else {
+        panic!("OS is not supported");
     }
-}
 
-fn main() {
-    print_banner();
-
-    print!("\033[1;32m[TCT]\033[0m Starte interaktive Sitzung...\n");
-    print!("\033[1;34m[INFO]\033[0m Gib ':q' ein zum Beenden.\n\n");
-
-    let mut input = String::new();
-    loop {
-        print!("> ");
-        if io::stdin().read_line(&mut input).unwrap() == 0 { break;}
-        input = input.trim().to_owned();
-
-        if input.as_str() == ":q" { break; }
-        print!("\033[1;33m[Du hast eingegeben:]\033[0m {}", input);
-    }
+    let mut mode_handler = ModeHandler::init(String::from(&os));
+    mode_handler.run()?;
+    
+    println!("test: {}", os);
+    Ok(())
 }
