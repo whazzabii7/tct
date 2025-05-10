@@ -1,11 +1,11 @@
-// mod history_entry;
-// use history_entry::*;
+pub mod history_entry;
+use history_entry::*;
 use std::ptr;
 
 pub struct History {
     name: String,
     date: String,
-    paragraphs: Vec<String>
+    pub entries: Vec<HistoryEntry>
 }
 
 impl History {
@@ -13,16 +13,28 @@ impl History {
         Self {
             name: String::new(),
             date: String::new(),
-            paragraphs: Vec::new(),
+            entries: Vec::new(),
         }
+    }
+
+    pub fn add_entry(&mut self, text: &str, typing: &str) {
+       self.entries.push(HistoryEntry::from(typing, text));
+    }
+
+    pub fn set_name(&mut self, name: &str) {
+        self.name = String::from(name);
+    }
+
+    pub fn get_name(&self) -> &str {
+        &self.name
     }
 
     pub fn set_date(&mut self) {
        self.date = get_date(); 
     }
 
-    pub fn get_date(&self) -> String {
-        self.date.clone()
+    pub fn get_date(&self) -> &str {
+        &self.date
     }
 
 }
