@@ -1,25 +1,31 @@
+// #########################################
+// #         Terminal Call Tracker         #
+// #########################################
+// ╔═══════════════════════════════════════╗
+// ║TCT uses a CLI tool that is specified  ║
+// ║in a config file and creates a history ║
+// ║of the exact commands used and the full║
+// ║output received.                       ║
+// ╚═══════════════════════════════════════╝
 mod io;
 mod mode_handler;
 mod history;
 mod tct_error;
+
+#[macro_use]
+mod macros;
 
 use io::*;
 use mode_handler::ModeHandler;
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let os: String;
-    if cfg!(target_os = "windows") {
-        os = String::from("windows");
-    } else if cfg!(target_os = "linux") {
-        os = String::from("linux")
-    } else {
-        panic!("OS is not supported");
-    }
 
-    let mut mode_handler = ModeHandler::init(String::from(&os));
+    let mut tester = history::History::new();
+    tester.set_date();
+    let mut mode_handler = ModeHandler::init();
     mode_handler.run()?;
     
-    println!("test: {}", os);
+    println!("{}", tester.get_date());
     Ok(())
 }
