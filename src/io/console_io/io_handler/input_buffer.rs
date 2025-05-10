@@ -16,7 +16,7 @@ impl InputBuffer {
         }
     }
 
-    pub fn flush(&mut self) -> Result<String, BufferError> {
+    pub fn flush(&mut self) -> String {
         print!("\r");
         let mut count: usize = 0;   
         let mut str_vec = Vec::new();
@@ -24,12 +24,20 @@ impl InputBuffer {
             str_vec.push(char::from(self.mem[count]));
             count += 1;
         }
-        Ok(str_vec.iter().collect::<String>()) 
+        self.ibp = 0;
+        str_vec.iter().collect::<String>() 
     }
 
     pub fn push(&mut self, ch: u8) {
         self.mem[self.ibp] = ch;
         self.ibp += 1;
+    }
+
+    pub fn pop(&mut self) {
+        if self.ibp > 0 {
+            print!("\x08 \x08");
+            self.ibp -= 1;
+        }
     }
 
     pub fn clear(&mut self) {
