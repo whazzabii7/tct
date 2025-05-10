@@ -23,9 +23,16 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let mut tester = history::History::new();
     tester.set_date();
+    tester.set_name("Test");
+    tester.add_entry("This is the test Command!", "CommandPrompt");
+    tester.add_entry("This is the test Answer!", "OutputAnswer");
     let mut mode_handler = ModeHandler::init();
     mode_handler.run()?;
     
     println!("{}", tester.get_date());
+    let tt = tester.entries.iter();
+    for i in tt {
+        println!("{}", i);
+    }
     Ok(())
 }
