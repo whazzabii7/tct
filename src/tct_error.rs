@@ -4,7 +4,7 @@ use std::io;
 #[derive(Debug)]
 pub enum IoError {
     FailedFlush,
-    FailedWrite,
+//     FailedWrite,
     FailedRead,
     Io(io::Error),
 }
@@ -13,7 +13,7 @@ impl fmt::Display for IoError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             IoError::FailedFlush => write!(f, "failed to flush"),
-            IoError::FailedWrite => write!(f, "failed to write"),
+//             IoError::FailedWrite => write!(f, "failed to write"),
             IoError::FailedRead => write!(f, "failed to read"),
             IoError::Io(e) => write!(f, "got std::io::Error: {}", e),
         }
@@ -59,3 +59,5 @@ impl fmt::Display for BufferError {
         }
     }
 }
+
+impl std::error::Error for BufferError {}
