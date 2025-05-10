@@ -1,64 +1,65 @@
 use std::fmt;
 
 #[derive(Debug)]
+#[repr(u8)]
 pub enum Color {
-    Input=63,
-    Command=172,
-    Red=160,
-    Green=40,
-    Blue=21,
-    Yellow=220,
-    Orange=214,
-    Cyan=87,
-    Magenta=201,
-    Purple=91,
-    White=231,
-    Black=0,
+    Input,
+    Command,
+    BannerColor,
+    TctGreen,
+    InfoBlue,
+    Red,
+    Green,
+    Blue,
+    Yellow,
+    Orange,
+    Cyan,
+    Magenta,
+    Purple,
+    White,
+    Black,
+    C256(u8),
 }
 
-impl From<Color> for u8 {
-    fn from(color: Color) -> Self {
-        color as u8
-    }
-}
-
-impl TryFrom<u8> for Color {
-    type Error = ();
-
-    fn try_from(value: u8) -> Result<Self, Self::Error> {
-        match value {
-
-            63  => Ok(Color::Input),
-            172 => Ok(Color::Command),
-            0   => Ok(Color::Black),
-            231 => Ok(Color::White),
-            91  => Ok(Color::Purple),
-            201 => Ok(Color::Magenta),
-            87  => Ok(Color::Cyan),
-            214 => Ok(Color::Orange),
-            220 => Ok(Color::Yellow),
-            160 => Ok(Color::Red),
-            40  => Ok(Color::Green),
-            21  => Ok(Color::Blue),
-            _   => Err(()),
+impl Color {
+    fn convert(&self) -> u8 {
+        match self {
+            Color::C256(val) => *val,
+            Color::Input => 63,
+            Color::Command => 172,
+            Color::BannerColor => 115,
+            Color::TctGreen => 192,
+            Color::InfoBlue => 75,
+            Color::Red => 160,
+            Color::Green => 40,
+            Color::Blue => 21,
+            Color::Yellow => 220,
+            Color::Orange => 214,
+            Color::Cyan => 87,
+            Color::Magenta => 201,
+            Color::Purple => 91,
+            Color::White => 231,
+            Color::Black => 0,
         }
     }
 }
 
 #[derive(Debug)]
 pub enum Colorize {
-    Fg(u8),
-    Bg(u8),
+    Fg(Color),
+    Bg(Color),
     Reset,
 }
 
+// uses fmt::Display trait as substitution for a
+// colorize function to reduce overhead
 impl fmt::Display for Colorize {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Colorize::Fg(color) => write!(f, 
-                "{}[38:5:{}m", crate::console_io::ESC, color),
+                "{}[38:5:{}m", crate::console_io::ESC, color.convert()),
             Colorize::Bg(color) => write!(f, 
-                "{}[48:5:{}m", crate::console_io::ESC, color),
+                "{}[48:5:{}m", crate::console_io::ESC, color.convert()),
             Colorize::Reset => write!(f, 
                 "{}[0m", crate::console_io::ESC),
         }
