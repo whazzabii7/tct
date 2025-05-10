@@ -3,7 +3,7 @@ use std::fmt;
 pub mod io_handler;
 pub use io_handler::IoHandler;
 
-mod colors;
+pub mod colors;
 use colors::*;
 
 const ESC: &str = "\x1B";
@@ -14,15 +14,18 @@ pub enum IoMode {
     Input
 }
 
+
+// use Display to create a reusable TUI block
+// to show current mode
 impl fmt::Display for IoMode {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             IoMode::Command => write!(f, 
-                "{}[COM]{}",
+                "{}[COMD]{}",
                 Colorize::Fg(Color::Command.into()), Colorize::Reset
             ),
             IoMode::Input => write!(f, 
-                "{}[IN]{}",
+                "{}[INPT]{}",
                 Colorize::Fg(Color::Input.into()), Colorize::Reset
             ),
         }
