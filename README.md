@@ -2,7 +2,7 @@
 
 **TCT (Terminal Call Tracker)** is a versatile, Rust-based CLI tool that acts as a wrapper for any terminal command, enabling you to **track input and output** across different runs. Originally designed to add local history to [`tgpt`](https://github.com/cheusov/tgpt), TCT has evolved into a general-purpose tool ideal for **debugging**, **interactive CLI workflows**, or **experimenting with variable inputs** across command-line programs.
 
-## 🔧 What It Does
+##  What It Does
 
 * Wraps any terminal command and logs:
 
@@ -17,19 +17,19 @@
   * Debugging shell scripts or CLI programs
   * Comparing outputs with different command arguments
 
-## 🚀 Features
+##  Features
 
-* 📝 Save each command and its output in a readable log file
-* 🔍 Navigate saved sessions via `fzf`
-* 🕹️ Works with any terminal command
-* ⚡ Fast and compiled with Rust
-* 💻 Minimal dependencies
+*  Save each command and its output in a readable log file
+*  Navigate saved sessions via `fzf`
+*  Works with any terminal command
+*  Fast and compiled with Rust
+*  Minimal dependencies
 
-## 📦 Installation
+##  Installation
 
-> ⚠️ Installation section under construction. Stay tuned!
+>  Installation section under construction. Stay tuned!
 
-## 🧪 Example Use Cases
+##  Example Use Cases
 
 * **ChatGPT Prompt Iteration**:
 
@@ -44,7 +44,7 @@
 
   * Quickly change input flags and review the effects.
 
-## 🗂️ Session Management
+##  Session Management
 
 * All sessions are saved in a dedicated directory (e.g., `~/.tct/sessions`)
 * Each file includes:
@@ -54,10 +54,10 @@
   * Full output
 * You can open `fzf` to switch between or preview saved sessions
 
-## 📌 Dependencies
+##  Dependencies
 
 * [`fzf`](https://github.com/junegunn/fzf) – for interactive session selection
 
-## 📣 Why TCT?
+##  Why TCT?
 
 TCT was born from a simple need: to have persistent local history for `tgpt`. But it quickly became a powerful general-purpose utility for **anyone who iterates over terminal commands** and wants visibility, structure, and traceability in their command-line workflows.
