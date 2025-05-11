@@ -53,11 +53,24 @@ pub enum BufferError {
 impl fmt::Display for BufferError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            BufferError::BufferOverflow => write!(f, ""),
-            BufferError::BufferUnderflow => write!(f, ""),
-            BufferError::BufferNotFound => write!(f, ""),
+            BufferError::BufferOverflow => write!(f, "overflow occured in buffer"),
+            BufferError::BufferUnderflow => write!(f, "underflow occured in buffer"),
+            BufferError::BufferNotFound => write!(f, "buffer could not be found"),
         }
     }
 }
 
 impl std::error::Error for BufferError {}
+
+#[derive(Debug)]
+pub enum TctError {
+    TimeNotFound
+}
+
+impl fmt::Display for TctError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            TctError::TimeNotFound => write!(f, "failed loading local time.")
+        }
+    }
+}
