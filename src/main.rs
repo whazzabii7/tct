@@ -22,7 +22,7 @@ use std::error::Error;
 fn main() -> Result<(), Box<dyn Error>> {
 
     let mut tester = history::History::new();
-    tester.set_date();
+    _ = tester.set_date();
     tester.set_name("Test");
     tester.add_entry("This is the test Command!", "CommandPrompt");
     tester.add_entry("This is the test Answer!", "OutputAnswer");
