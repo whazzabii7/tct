@@ -1,5 +1,9 @@
-use std::io::{self, Write};
+use std::{
+    io::{self, Write},
+    env,
+};
 use crate::{
+    not,
     io::console_io::{
         colors::*,
         IoMode,
