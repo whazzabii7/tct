@@ -57,9 +57,9 @@ impl fmt::Display for Colorize {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Colorize::Fg(color) => write!(f, 
-                "{}[38:5:{}m", crate::console_io::ESC, color.convert()),
+                "{}[38;5;{}m", crate::console_io::ESC, color.convert()),
             Colorize::Bg(color) => write!(f, 
-                "{}[48:5:{}m", crate::console_io::ESC, color.convert()),
+                "{}[48;5;{}m", crate::console_io::ESC, color.convert()),
             Colorize::Reset => write!(f, 
                 "{}[0m", crate::console_io::ESC),
         }
