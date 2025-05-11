@@ -51,8 +51,10 @@ fn read_input(io_handler: &mut IoHandler, buffer: &mut [u8;1], handle: &mut Stdi
     match handle.read(buffer) {
         Ok(1) => {
             let byte = buffer[0];
-            if byte == 0x1B && process_escaped_key(handle, buffer) {
-                *stopped = true;
+            if byte == 0x1B {
+                if process_escaped_key(handle, buffer) {
+                    *stopped = true;
+                }
             } else {
                 process_key(io_handler, byte)?;
             }
