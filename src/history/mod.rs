@@ -1,5 +1,7 @@
 pub mod history_entry;
 use history_entry::*;
+
+use crate::tct_error::TctError;
 use std::ptr;
 
 pub struct History {
@@ -29,8 +31,9 @@ impl History {
         &self.name
     }
 
-    pub fn set_date(&mut self) {
-       self.date = get_date(); 
+    pub fn set_date(&mut self) -> Result<(), TctError> {
+       self.date = get_date()?; 
+       Ok(())
     }
 
     pub fn get_date(&self) -> &str {
@@ -40,7 +43,7 @@ impl History {
 }
 
 #[cfg(unix)]
-fn get_date() -> String {
+fn get_date() -> Result<String, TctError> {
     use libc::{localtime, time, time_t, tm};
 
     unsafe {
@@ -48,30 +51,37 @@ fn get_date() -> String {
         let tm: *mut tm = localtime(&mut t);
         let tm_ref: tm = *tm;
 
-        format!(
-            "{:04}-{:02}-{:02}",
-            tm_ref.tm_year + 1900,
-            tm_ref.tm_mon + 1,
-            tm_ref.tm_mday
-        )
+        Ok(format!(
+                "{:04}-{:02}-{:02}",
+                tm_ref.tm_year + 1900,
+                tm_ref.tm_mon + 1,
+                tm_ref.tm_mday
+        ))
     }
 }
 
 #[cfg(windows)]
-fn get_date() {
-    use libc::{localtime, time, time_t, tm}; // Works with `libc` on Windows too
+fn get_date() -> Result<String, TctError> {
+    use libc::{localtime_s, time, time_t, tm}; // Works with `libc` on Windows, but localtime
+                                               // intentionally not exists
+    use std::mem::MaybeUninit;
 
     unsafe {
         let mut t: time_t = time(ptr::null_mut());
-        let tm: *mut tm = localtime(&mut t);
-        let tm_ref: tm = *tm;
+        let mut tm = MaybeUninit::<tm>::uninit();
+        let ret = localtime_s(tm.as_mut_ptr(), &mut t);
 
-        format!(
-            "Date: {:04}-{:02}-{:02}",
-            tm_ref.tm_year + 1900,
-            tm_ref.tm_mon + 1,
-            tm_ref.tm_mday
-        )
+        if ret == 0 {
+            Ok(format!(
+                    "{:04}-{:02}-{:02}",
+                    (*tm.as_ptr()).tm_year + 1900,
+                    (*tm.as_ptr()).tm_mon + 1,
+                    (*tm.as_ptr()).tm_mday
+            ))
+        } else {
+            Err(TctError::TimeNotFound)
+        }
+
     }
 }
 
