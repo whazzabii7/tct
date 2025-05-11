@@ -58,37 +58,58 @@ pub mod raw_mode {
 #[cfg(windows)]
 pub mod raw_mode {
     use std::io;
-    use windows_sys::Win32::System::Console::{
-        GetConsoleMode, SetConsoleMode, GetStdHandle,
-        ENABLE_PROCESSED_INPUT, ENABLE_LINE_INPUT, ENABLE_ECHO_INPUT, STD_INPUT_HANDLE,
+    use windows_sys::Win32::{
+        Foundation::HANDLE,
+        System::Console::{
+            GetConsoleMode, SetConsoleMode, GetStdHandle,
+            ENABLE_PROCESSED_INPUT, ENABLE_LINE_INPUT, ENABLE_ECHO_INPUT,
+            ENABLE_VIRTUAL_TERMINAL_PROCESSING,
+            STD_INPUT_HANDLE, STD_OUTPUT_HANDLE,
+        },
     };
-    use windows_sys::Win32::System::Console::SetConsoleCtrlHandler;
 
-    /// Represents a raw mode console session
+    /// Represents a raw mode console session with ANSI color support
     pub struct RawMode {
-        original: u32,  // Original console mode
-        handle: isize,  // Handle to console input
+        input_handle: HANDLE,
+        output_handle: HANDLE,
+        original_input_mode: u32,
+        original_output_mode: u32,
     }
 
     impl RawMode {
-        /// Enables raw mode by disabling line input, echo, and processed input
+        /// Enables raw mode and ANSI color support
         pub fn enable() -> io::Result<Self> {
             unsafe {
-                let handle = GetStdHandle(STD_INPUT_HANDLE);
-                let mut mode = 0;
-
-                if GetConsoleMode(handle, &mut mode) == 0 {
+                // Input: raw mode
+                let input_handle = GetStdHandle(STD_INPUT_HANDLE);
+                let mut input_mode = 0;
+                if GetConsoleMode(input_handle, &mut input_mode) == 0 {
+                    return Err(io::Error::last_os_error());
+                }
+                let original_input_mode = input_mode;
+                input_mode &= !(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT | ENABLE_PROCESSED_INPUT);
+                if SetConsoleMode(input_handle, input_mode) == 0 {
                     return Err(io::Error::last_os_error());
                 }
 
-                let original = mode;
-                mode &= !(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT | ENABLE_PROCESSED_INPUT);
-
-                if SetConsoleMode(handle, mode) == 0 {
+                // Output: enable ANSI escape sequences
+                let output_handle = GetStdHandle(STD_OUTPUT_HANDLE);
+                let mut output_mode = 0;
+                if GetConsoleMode(output_handle, &mut output_mode) == 0 {
+                    return Err(io::Error::last_os_error());
+                }
+                let original_output_mode = output_mode;
+                output_mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+                if SetConsoleMode(output_handle, output_mode) == 0 {
                     return Err(io::Error::last_os_error());
                 }
 
-                Ok(Self { original, handle })
+                Ok(Self {
+                    input_handle,
+                    output_handle,
+                    original_input_mode,
+                    original_output_mode,
+                })
             }
         }
     }
@@ -96,9 +117,9 @@ pub mod raw_mode {
     impl Drop for RawMode {
         fn drop(&mut self) {
             unsafe {
-                SetConsoleMode(self.handle, self.original);
+                SetConsoleMode(self.input_handle, self.original_input_mode);
+                SetConsoleMode(self.output_handle, self.original_output_mode);
             }
         }
     }
 }
-
