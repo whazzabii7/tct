@@ -7,6 +7,12 @@
 // ║of the exact commands used and the full║
 // ║output received.                       ║
 // ╚═══════════════════════════════════════╝
+// === main ===
+// Handles the main modules and signals the
+// ModeHandler to start the main_loop after 
+// setting the program up and providing the
+// setup to ModeHandler.
+
 mod io;
 mod mode_handler;
 mod history;
@@ -22,13 +28,12 @@ use std::error::Error;
 fn main() -> Result<(), Box<dyn Error>> {
 
     let mut tester = history::History::new();
-    _ = tester.set_date();
     tester.set_name("Test");
     tester.add_entry("This is the test Command!", "CommandPrompt");
     tester.add_entry("This is the test Answer!", "OutputAnswer");
     let mut mode_handler = ModeHandler::init();
     mode_handler.run()?;
-    
+
     println!("{}", tester.get_date());
     let tt = tester.entries.iter();
     for i in tt {

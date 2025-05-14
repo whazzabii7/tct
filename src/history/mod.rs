@@ -1,9 +1,15 @@
+//! # === history ===
+//!
+//! tracks a session of in an output
+//! of configured executable.
+
 pub mod history_entry;
 use history_entry::*;
 
 use crate::tct_error::TctError;
 use std::ptr;
 
+/// stores in and output, name and date as storage informations
 pub struct History {
     name: String,
     date: String,
@@ -11,6 +17,7 @@ pub struct History {
 }
 
 impl History {
+    /// default constructor
     pub fn new() -> Self {
         Self {
             name: String::new(),
@@ -19,6 +26,7 @@ impl History {
         }
     }
 
+    /// appends entry to the end of list
     pub fn add_entry(&mut self, text: &str, typing: &str) {
        self.entries.push(HistoryEntry::from(typing, text));
     }
@@ -31,7 +39,7 @@ impl History {
         &self.name
     }
 
-    pub fn set_date(&mut self) -> Result<(), TctError> {
+    fn set_date(&mut self) -> Result<(), TctError> {
        self.date = get_date()?; 
        Ok(())
     }
@@ -42,7 +50,8 @@ impl History {
 
 }
 
-#[cfg(unix)]
+// get_date to keep track of last modified
+#[cfg(unix)] // linux variant
 fn get_date() -> Result<String, TctError> {
     use libc::{localtime, time, time_t, tm};
 
@@ -60,7 +69,7 @@ fn get_date() -> Result<String, TctError> {
     }
 }
 
-#[cfg(windows)]
+#[cfg(windows)] // windows variant
 fn get_date() -> Result<String, TctError> {
     use libc::{localtime_s, time, time_t, tm}; // Works with `libc` on Windows, but localtime
                                                // intentionally not exists

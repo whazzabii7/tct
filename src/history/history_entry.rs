@@ -1,5 +1,10 @@
+//! # === history_entry ===
+//!
+//! distincts user input from program output
+
 use std::fmt;
 
+/// Defines Entry type
 #[derive(Debug)]
 pub enum HistoryEntry  {
     CommandPrompt(String),
@@ -23,6 +28,7 @@ impl fmt::Display for HistoryEntry {
 }
 
 impl HistoryEntry {
+    /// creates entry instance from given type-String and text
     pub fn from(typing: &str, text: &str) -> Self {
         match typing {
             "CommandPrompt" => HistoryEntry::CommandPrompt(String::from(text)),

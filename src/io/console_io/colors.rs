@@ -1,5 +1,12 @@
+//! # === colors ===
+//!
+//! defines colors used for output.
+//! also defines wrapper enum to process
+//! color to actuall text.
+
 use std::fmt;
 
+/// defned colors
 #[derive(Debug)]
 #[repr(u8)]
 pub enum Color {
@@ -44,6 +51,7 @@ impl Color {
     }
 }
 
+/// wrapper to convert Color to String
 #[derive(Debug)]
 pub enum Colorize {
     Fg(Color),

@@ -1,3 +1,7 @@
+//! # === console_io ===
+//!
+//! defines console I/O modules and I/O Modes.
+
 use std::fmt;
 
 pub mod io_handler;
@@ -8,6 +12,7 @@ use colors::*;
 
 const ESC: &str = "\x1B";
 
+/// the different Input modes
 #[derive(Debug)]
 pub enum IoMode {
     Command,

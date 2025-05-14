@@ -1,3 +1,10 @@
+//! # === raw_mode ===
+//!
+//! Sets all options for the Raw mode, which is used
+//! by the terminal to handle the input of user as 
+//! raw bytes.
+//  module is splitet in two halfs because of cross compilation
+
 // Only compile this module on Unix-like systems
 #[cfg(unix)]
 pub mod raw_mode {

@@ -1,3 +1,9 @@
+//! # === command_mode ===
+//!
+//! handels user input as commands.
+//! pervorms actions specific to entered
+//! message.
+
 use crate::{
     not,
     io::console_io::{
@@ -8,6 +14,7 @@ use crate::{
     tct_error::IoError,
 };
 
+// matches input with corosponding command from list
 fn list_of_commands(input: &str, handler: &mut IoHandler, stopped: &mut bool) -> Result<(), IoError> {
     // TODO: add the missing commands
     match input {
@@ -24,6 +31,7 @@ fn list_of_commands(input: &str, handler: &mut IoHandler, stopped: &mut bool) ->
     Ok(())
 }
 
+// unwraps the user input
 fn process_command(handler: &mut IoHandler, stopped: &mut bool) -> Result<(), IoError> {
     match handler.read() {
         Err(e) => panic!("paniced with: {:?}", e),
@@ -34,6 +42,7 @@ fn process_command(handler: &mut IoHandler, stopped: &mut bool) -> Result<(), Io
     Ok(())
 }
 
+/// enters module here
 pub fn command_loop(handler: &mut IoHandler) -> Result<(), IoError> {
     let mut stopped = false;
     while not!(stopped) {

@@ -1,6 +1,13 @@
+//! # === tct_error ===
+//!
+//! Defines the different errors the program
+//! is able to throw. used to locate breaking
+//! functions faster and handle different cases.
+
 use std::fmt;
 use std::io;
 
+/// thrown by console_io module
 #[derive(Debug)]
 pub enum IoError {
     FailedFlush,
@@ -22,6 +29,7 @@ impl fmt::Display for IoError {
 
 impl std::error::Error for IoError {}
 
+/// thrown by file_io
 #[derive(Debug)]
 pub enum FileError {
     PermissionDenied,
@@ -43,6 +51,7 @@ impl fmt::Display for FileError {
 
 impl std::error::Error for FileError {}
 
+/// currently unused
 #[derive(Debug)]
 pub enum BufferError {
     BufferOverflow,
@@ -62,6 +71,7 @@ impl fmt::Display for BufferError {
 
 impl std::error::Error for BufferError {}
 
+/// general Errors
 #[derive(Debug)]
 pub enum TctError {
     TimeNotFound
